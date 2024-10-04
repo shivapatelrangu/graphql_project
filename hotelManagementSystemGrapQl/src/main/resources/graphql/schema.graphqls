@@ -1,0 +1,39 @@
+
+type HotelRooms {
+    roomId: ID
+    pricePerDay: Float
+    roomType: String
+    roomDetails: [RoomDetails]
+}
+type ReservationDetails {
+    bookingId: ID
+    custId: Int
+    staffId: Int
+    checkInDate: String
+    checkOutDate: String
+    noOfRooms: Int
+    priceAmount: Float
+    roomDetails: [RoomDetails]
+}
+
+type RoomDetails {
+    rid: ID
+    bookingId: Int
+    status: String
+    roomId: Int
+}
+
+
+type Query {
+    searchAvailableRooms(
+        fromDate: String,
+        toDate: String,
+        staffId: Int,
+        custId: Int,
+    ): [SearchRoomsResponseDto]
+}
+type SearchRoomsResponseDto {
+    roomType: String
+    price: Float
+    totalAvailableRooms: Int
+}
