@@ -16,13 +16,10 @@ public class RoomsReservationRequestDto {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "Please Enter Checkin Date")
-	private Date checkInDate;
+	private String checkInDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "Please Enter Checkout Date")
-	private Date checkOutDate;
-	
-	
-	
+	private String checkOutDate;
 
 	@Min(value = 0, message = "AC rooms should be at least 0")
 	@Max(value = 7, message = "AC rooms should be at most 7")

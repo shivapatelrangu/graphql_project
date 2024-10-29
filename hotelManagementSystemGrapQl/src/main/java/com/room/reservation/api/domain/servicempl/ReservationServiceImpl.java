@@ -43,7 +43,7 @@ public class ReservationServiceImpl implements ReservationService {
 	RoomsReservartionResponseDto result = new RoomsReservartionResponseDto();
 
 	@Override
-	public RoomsReservartionResponseDto reserveHotelRooms(RoomsReservationRequestDto bookingdetails) {
+	public RoomsReservartionResponseDto reserveHotelRooms(RoomsReservationRequestDto bookingdetails,Date fromDate,Date toDate) {
 
 		log.info(" method name:saveReservation, recived request to reserve rooms  ");
 
@@ -62,8 +62,8 @@ public class ReservationServiceImpl implements ReservationService {
 		List<Integer> tempNonAcRooms = new ArrayList<>(nonAcRooms);
 		List<Integer> tempDeluxRooms = new ArrayList<>(deluxRooms);
 
-		Date newCheckIn = setNoonTime(bookingdetails.getCheckInDate());
-		Date newCheckOut = setElevenAMTime(bookingdetails.getCheckOutDate());
+		Date newCheckIn = setNoonTime(fromDate);
+		Date newCheckOut = setElevenAMTime(toDate);
 
 //   getting all reserved rooms in range of fromDate and toDate
 		List<Integer> reservedRoomsInRangeOfDates = roomDetailsRepo
@@ -71,7 +71,7 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		if (reservedRoomsInRangeOfDates.isEmpty()) {
 			// selecting rooms from all available rooms
-			String message = selectRooms(acRooms, nonAcRooms, deluxRooms, bookingdetails);
+			String message = selectRooms(acRooms, nonAcRooms, deluxRooms, bookingdetails,fromDate,toDate);
 
 			result.setMessage(message);
 
@@ -103,7 +103,7 @@ public class ReservationServiceImpl implements ReservationService {
 		validateReservations(tempAcrooms, tempNonAcRooms, tempDeluxRooms, reservedAcRooms, reservedNonAcrooms,
 				reservedDeluxRooms, bookingdetails);
 // selecting rooms for reservation after finding available rooms
-		String message = selectRooms(tempAcrooms, tempNonAcRooms, tempDeluxRooms, bookingdetails);
+		String message = selectRooms(tempAcrooms, tempNonAcRooms, tempDeluxRooms, bookingdetails,fromDate,toDate);
 
 		result.setMessage(message);
 
@@ -113,7 +113,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	public String selectRooms(List<Integer> acRooms, List<Integer> nonAcRooms, List<Integer> deluxRooms,
-			RoomsReservationRequestDto bookingdetails) {
+			RoomsReservationRequestDto bookingdetails,Date fromDate,Date toDate) {
 		log.info(" method name: selectRooms requested from saveReservation method");
 
 		List<Integer> selectedAcRooms = new ArrayList<>();
@@ -148,7 +148,7 @@ public class ReservationServiceImpl implements ReservationService {
 			combinedlist.addAll(selectedDeluxRooms);
 
 		int bookingid = saveReservationRooms(bookingdetails, selectedAcRooms, selectedNonAcRooms, selectedDeluxRooms,
-				combinedlist);
+				combinedlist,fromDate,toDate);
 
 		log.info("rooms reserved successfully with booking Id: " + bookingid);
 
@@ -156,7 +156,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	public int saveReservationRooms(RoomsReservationRequestDto bookingdetails, List<Integer> selectedAcRooms,
-			List<Integer> selectedNonAcRooms, List<Integer> selectedDeluxRooms, List<Integer> combinedlist) {
+			List<Integer> selectedNonAcRooms, List<Integer> selectedDeluxRooms, List<Integer> combinedlist,Date fromDate,Date toDate) {
 
 		log.info(" method name: saveReservationRooms, requested from method select rooms");
 		ReservationDetails bookings = new ReservationDetails();
@@ -164,8 +164,8 @@ public class ReservationServiceImpl implements ReservationService {
 		int totalrooms = bookingdetails.getNoOfAcRooms() + bookingdetails.getNoOfNonAcRooms()
 				+ bookingdetails.getNoOfDeluxRooms();
 		
-		Date newCheckin = setNoonTime(bookingdetails.getCheckInDate());
-		Date newCheckOut = setElevenAMTime(bookingdetails.getCheckOutDate());
+		Date newCheckin = setNoonTime(fromDate);
+		Date newCheckOut = setElevenAMTime(toDate);
 		
 		bookings.setCheckInDate(newCheckin);
 		bookings.setCheckOutDate(newCheckOut);

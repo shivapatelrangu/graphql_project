@@ -22,18 +22,58 @@ type RoomDetails {
     status: String
     roomId: Int
 }
-
-
-type Query {
-    searchAvailableRooms(
-        fromDate: String,
-        toDate: String,
-        staffId: Int,
-        custId: Int,
-    ): [SearchRoomsResponseDto]
-}
 type SearchRoomsResponseDto {
     roomType: String
     price: Float
     totalAvailableRooms: Int
+}
+
+
+type Query {
+    searchAvailableRooms(
+        fromdate: String,
+        todate: String,
+        staffId: Int,
+        custId: Int,
+    ): [SearchRoomsResponseDto]
+    viewReservation(
+        bookingId:Int
+        staffId: Int
+        custId: Int
+    ):ViewReservationResponseDto
+}
+type Mutation {
+    reserveHotelRooms(input: RoomsReservationRequestDto,staffId: Int, custId: Int): RoomsReservationResponseDto
+    cancelReservation(input:CancelReservationRequestDto,staffId: Int, custId: Int):CancelReservationResponseDto
+}
+
+input RoomsReservationRequestDto {
+    checkInDate: String
+    checkOutDate: String
+    noOfAcRooms: Int
+    noOfNonAcRooms: Int
+    noOfDeluxRooms: Int
+}
+
+type RoomsReservationResponseDto {
+    message: String
+}
+input CancelReservationRequestDto{
+    bookingId:Int
+    acRooms:Int
+    nonAcRooms:Int
+    deluxRooms:Int
+}
+type CancelReservationResponseDto{
+    message:String
+}
+type ViewReservationResponseDto{
+    checkInDate:String
+    checkOutDate:String
+    noOfRooms:Int
+    acRooms:Int
+    nonAcRooms:Int
+
+    deluxRooms:Int
+    pricePaid:Float
 }

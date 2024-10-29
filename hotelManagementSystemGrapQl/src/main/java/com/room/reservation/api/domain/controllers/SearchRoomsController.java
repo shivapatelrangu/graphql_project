@@ -37,12 +37,16 @@ public class SearchRoomsController {
 	HotelRoomsService searchservice;
 
 	@QueryMapping
-	public ResponseEntity<List<SearchRoomsResponseDto>> searchAvailableRooms(
+	public List<SearchRoomsResponseDto> searchAvailableRooms(
 
-			@Valid @Argument("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
-			@Valid @Argument("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+			@Valid @Argument("fromdate")  String fromdate,
+			@Valid @Argument("todate")  String todate,
 			@Argument("staffId") int staffId, @Argument("custId") int customerId)
 			throws ParseException, SQLException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date fromDate = dateFormat.parse(fromdate);
+		Date toDate = dateFormat.parse(todate);
+
 
 		log.info(
 				"/api/search-rooms/available  method name: searchAvailableRooms"
@@ -50,10 +54,9 @@ public class SearchRoomsController {
 				fromDate, toDate, staffId, customerId);
 		if (vaidateRequest(fromDate, toDate)) {
 
-			List<SearchRoomsResponseDto> response = searchservice.getAvailableRooms(fromDate, toDate, staffId,
+			return searchservice.getAvailableRooms(fromDate, toDate, staffId,
 					customerId);
 
-			return ResponseEntity.ok(response);
 		}
 		log.warn("Method Name:searchAvailableRooms, please enter valid {} and {} ", fromDate, toDate);
 		throw new ValidationException("please enter valid fromDate and toDate ", CustomHttpStatus.BAD_REQUEST);

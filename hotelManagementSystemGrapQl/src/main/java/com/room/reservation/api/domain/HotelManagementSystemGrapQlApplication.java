@@ -3,7 +3,7 @@ package com.room.reservation.api.domain;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"com.room.reservation.api"})
+@SpringBootApplication  //(scanBasePackages = {"com.room.reservation.api.domain"})
 public class HotelManagementSystemGrapQlApplication {
 
 	public static void main(String[] args) {

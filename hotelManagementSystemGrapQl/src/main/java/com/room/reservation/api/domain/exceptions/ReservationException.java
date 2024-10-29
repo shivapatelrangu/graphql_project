@@ -13,20 +13,20 @@ import lombok.Setter;
 public class ReservationException extends RuntimeException{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private CustomHttpStatus customHttpStatus;
 
-	
-	
+
+
 
 	public ReservationException(String message,CustomHttpStatus customHttpStatus)
 	{
 		super(message);
 		this.customHttpStatus=customHttpStatus;
 	}
-	
-	
+
+
 }
