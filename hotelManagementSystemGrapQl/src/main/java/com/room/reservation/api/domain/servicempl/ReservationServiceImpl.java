@@ -224,16 +224,16 @@ public class ReservationServiceImpl implements ReservationService {
 		List<Integer> acRooms = hotelRoomsRepo.getRoomIds("AC");
 		List<Integer> nonAcRooms = hotelRoomsRepo.getRoomIds("NON_AC");
 		List<Integer> deluxRooms = hotelRoomsRepo.getRoomIds("DELUX");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-		String fromDateStr = sdf.format(bookingdetails.getCheckInDate());
-		String toDateStr = sdf.format(bookingdetails.getCheckOutDate());
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//
+//		String fromDateStr = sdf.format(bookingdetails.getCheckInDate());
+//		String toDateStr = sdf.format(bookingdetails.getCheckOutDate());
 
 		if (acRoomIds.size() + nonAcroomIds.size() + deluxRoomIds.size() == acRooms.size() + nonAcRooms.size()
 				+ deluxRooms.size()) {
 
-			log.warn(" method name:validateReservations " + "No Rooms Available from " + fromDateStr + " to "
-					+ toDateStr);
+			log.warn(" method name:validateReservations " + "No Rooms Available from " + bookingdetails.getCheckInDate() + " to "
+					+ bookingdetails.getCheckOutDate());
 			throw new ReservationException("No Rooms Available from " + bookingdetails.getCheckInDate() + " to "
 					+ bookingdetails.getCheckOutDate(),CustomHttpStatus.BAD_REQUEST);
 
